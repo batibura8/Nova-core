@@ -164,3 +164,24 @@ button {
     background: #6c63ff;
     color: white;
 }
+.dark {
+    background: #121212 !important;
+    color: white;
+}
+
+.dark .container {
+    background: rgba(30,30,30,0.9);
+    color: white;
+}
+
+.dark textarea,
+.dark select {
+    background: #2b2b2b;
+    color: white;
+    border: 1px solid #555;
+}
+
+.dark button {
+    background: #6c63ff;
+    color: white;
+}
