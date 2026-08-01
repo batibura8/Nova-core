@@ -133,8 +133,6 @@ themeBtn.addEventListener("click", () => {
     }
 });
 
-const micBtn = document.getElementById("micBtn");
-
 if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
 
     const SpeechRecognition =
