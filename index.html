@@ -1,57 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>Lingo Bati - AI Translator</title>
 
     <link rel="stylesheet" href="style.css">
 
-    <!-- Icons -->
+    <!-- Font Awesome -->
     <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
 </head>
 
 <body>
 
 <header>
-    <h1>🌍 Lingo Bati</h1>
-    <p>Translate Any Language Instantly</p>
-<button id="downloadBtn">📥 Download</button>
 
-<button id="clearBtn">🗑️ Clear</button>
-    <button id="themeBtn">
-        🌙 Dark Mode
-    </button>
+    <h1>🌍 Lingo Bati</h1>
+
+    <p>Translate Any Language Instantly</p>
+
+    <div class="top-buttons">
+
+        <button id="themeBtn">
+            🌙 Dark Mode
+        </button>
+
+        <button id="downloadBtn">
+            📥 Download
+        </button>
+
+        <button id="clearBtn">
+            🗑️ Clear
+        </button>
+
+    </div>
+
 </header>
 
 <div class="container">
 
-    <!-- INPUT -->
+    <!-- INPUT CARD -->
+
     <div class="card">
 
-        <h2>Input</h2>
+        <h2>Input Text</h2>
 
         <select id="fromLanguage">
-            <option value="auto">🌐 Detect Language</option>
-            <option value="en">🇺🇸 English</option>
-            <option value="om">🇪🇹 Afaan Oromoo</option>
-            <option value="am">🇪🇹 Amharic</option>
-            <option value="es">🇪🇸 Spanish</option>
-            <option value="fr">🇫🇷 French</option>
-            <option value="de">🇩🇪 German</option>
-            <option value="ar">🇸🇦 Arabic</option>
+
+            <option value="auto">
+                🌐 Detect Language
+            </option>
+
+            <option value="en">
+                🇺🇸 English
+            </option>
+
+            <option value="om">
+                🇪🇹 Afaan Oromoo
+            </option>
+
+            <option value="am">
+                🇪🇹 Amharic
+            </option>
+
+            <option value="ar">
+                🇸🇦 Arabic
+            </option>
+
+            <option value="fr">
+                🇫🇷 French
+            </option>
+
+            <option value="es">
+                🇪🇸 Spanish
+            </option>
+
+            <option value="de">
+                🇩🇪 German
+            </option>
+
+            <option value="zh">
+                🇨🇳 Chinese
+            </option>
+
+            <option value="hi">
+                🇮🇳 Hindi
+            </option>
+                        <option value="pt">🇵🇹 Portuguese</option>
+            <option value="it">🇮🇹 Italian</option>
             <option value="ru">🇷🇺 Russian</option>
-            <option value="zh">🇨🇳 Chinese</option>
             <option value="ja">🇯🇵 Japanese</option>
             <option value="ko">🇰🇷 Korean</option>
-            <option value="hi">🇮🇳 Hindi</option>
-            <option value="pt">🇵🇹 Portuguese</option>
-            <option value="it">🇮🇹 Italian</option>
             <option value="tr">🇹🇷 Turkish</option>
             <option value="nl">🇳🇱 Dutch</option>
             <option value="pl">🇵🇱 Polish</option>
-            <option value="uk">🇺🇦 Ukrainian</option>
             <option value="sv">🇸🇪 Swedish</option>
             <option value="fi">🇫🇮 Finnish</option>
             <option value="da">🇩🇰 Danish</option>
@@ -72,13 +121,9 @@
 
         <div class="buttons">
 
-            <button id="micBtn">
-                🎤 Speak
-            </button>
+            <button id="micBtn">🎤 Speak</button>
 
-            <button id="copyInput">
-                📋 Copy
-            </button>
+            <button id="copyInput">📋 Copy</button>
 
         </div>
 
@@ -88,9 +133,7 @@
 
     <div class="middle">
 
-        <button id="swapBtn">
-            🔄
-        </button>
+        <button id="swapBtn">🔄</button>
 
     </div>
 
@@ -101,28 +144,105 @@
         <h2>Translation</h2>
 
         <select id="toLanguage">
+
             <option value="en">🇺🇸 English</option>
             <option value="om">🇪🇹 Afaan Oromoo</option>
             <option value="am">🇪🇹 Amharic</option>
-            <option value="es">🇪🇸 Spanish</option>
-            <option value="fr">🇫🇷 French</option>
-            <option value="de">🇩🇪 German</option>
             <option value="ar">🇸🇦 Arabic</option>
-            <option value="ru">🇷🇺 Russian</option>
+            <option value="fr">🇫🇷 French</option>
+            <option value="es">🇪🇸 Spanish</option>
+            <option value="de">🇩🇪 German</option>
             <option value="zh">🇨🇳 Chinese</option>
-            <option value="ja">🇯🇵 Japanese</option>
-            <option value="ko">🇰🇷 Korean</option>
             <option value="hi">🇮🇳 Hindi</option>
             <option value="pt">🇵🇹 Portuguese</option>
-            <option value="it">🇮🇹 Italian</option>
+                        <option value="it">🇮🇹 Italian</option>
+            <option value="ru">🇷🇺 Russian</option>
+            <option value="ja">🇯🇵 Japanese</option>
+            <option value="ko">🇰🇷 Korean</option>
             <option value="tr">🇹🇷 Turkish</option>
             <option value="nl">🇳🇱 Dutch</option>
             <option value="pl">🇵🇱 Polish</option>
-            <option value="uk">🇺🇦 Ukrainian</option>
             <option value="sv">🇸🇪 Swedish</option>
             <option value="fi">🇫🇮 Finnish</option>
             <option value="da">🇩🇰 Danish</option>
-            <option value="no">🇳
-<div class="translate-area">
-    <button id="translateBtn">🌍 Translate</button>
+            <option value="no">🇳🇴 Norwegian</option>
+            <option value="el">🇬🇷 Greek</option>
+            <option value="he">🇮🇱 Hebrew</option>
+            <option value="id">🇮🇩 Indonesian</option>
+            <option value="ms">🇲🇾 Malay</option>
+            <option value="th">🇹🇭 Thai</option>
+            <option value="vi">🇻🇳 Vietnamese</option>
+            <option value="sw">🇰🇪 Swahili</option>
+            <option value="so">🇸🇴 Somali</option>
+
+        </select>
+
+        <textarea
+            id="outputText"
+            placeholder="Translation appears here..."
+            readonly></textarea>
+
+        <div class="buttons">
+
+            <button id="copyOutput">📋 Copy</button>
+
+            <button id="speakBtn">🔊 Listen</button>
+
+        </div>
+
+    </div>
+
 </div>
+
+<!-- IMAGE TRANSLATOR -->
+
+<div class="upload-section">
+
+    <h2>📷 Image Translator</h2>
+
+    <input
+        type="file"
+        id="imageInput"
+        accept="image/*">
+
+    <br><br>
+
+    <img
+        id="previewImage"
+        style="display:none; max-width:300px; border-radius:15px;">
+
+    <br><br>
+
+    <button id="extractBtn">
+        📄 Extract Text
+    </button>
+
+</div>
+
+<!-- TRANSLATE BUTTON -->
+
+<div class="translate-area">
+
+    <button id="translateBtn">
+        🌍 Translate
+    </button>
+
+</div>
+<!-- FOOTER -->
+
+<footer>
+
+    <p>
+        © 2026 Lingo Bati • AI Language Translator
+    </p>
+
+</footer>
+
+<!-- OCR Library -->
+<script src="https://unpkg.com/tesseract.js@5/dist/tesseract.min.js"></script>
+
+<!-- Main JavaScript -->
+<script src="script.js"></script>
+
+</body>
+</html>
