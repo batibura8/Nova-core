@@ -7,6 +7,7 @@ const swapBtn = document.getElementById("swapBtn");
 const copyInput = document.getElementById("copyInput");
 const copyOutput = document.getElementById("copyOutput");
 const micBtn = document.getElementById("micBtn");
+const themeBtn = document.getElementById("themeBtn");
 
 // =======================
 // VOICE INPUT
