@@ -8,7 +8,7 @@ body {
     font-family: Arial, sans-serif;
     min-height: 100vh;
 
-    background: url("global.png") no-repeat center center fixed;
+    background: url("images.jpeg") no-repeat center center fixed;
 background-size: cover;
 
     display: flex;
