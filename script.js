@@ -17,8 +17,23 @@ if (SpeechRecognition) {
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
-    micBtn.addEventListener("click", function () {
+    let isListening = false;
+
+micBtn.addEventListener("click", function () {
+    if (!isListening) {
         recognition.start();
+    }
+});
+
+recognition.onstart = function () {
+    isListening = true;
+    micBtn.textContent = "🎙️ Listening...";
+};
+
+recognition.onend = function () {
+    isListening = false;
+    micBtn.textContent = "🎤 Speak";
+};
     });
 
     recognition.onresult = function (event) {
