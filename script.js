@@ -43,7 +43,7 @@ recognition.onend = function () {
     recognition.onerror = function (event) {
     alert("Error: " + event.error);
 };
-    };
+    
 } else {
     micBtn.disabled = true;
     micBtn.textContent = "Speech not supported";
