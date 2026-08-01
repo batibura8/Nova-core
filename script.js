@@ -25,8 +25,9 @@ if (SpeechRecognition) {
         inputText.value = event.results[0][0].transcript;
     };
 
-    recognition.onerror = function () {
-        alert("Microphone hin hojjenne ykn hayyamni hin kennamne.");
+    recognition.onerror = function (event) {
+    alert("Error: " + event.error);
+};
     };
 } else {
     micBtn.disabled = true;
