@@ -574,3 +574,82 @@ footer{
 #translateBtn:hover{
     background:#1d4ed8;
 }
+/* ==========================
+   MOBILE RESPONSIVE
+========================== */
+
+@media (max-width: 768px) {
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 15px;
+    }
+
+    .card {
+        width: 100%;
+    }
+
+    .middle {
+        display: flex;
+        justify-content: center;
+    }
+
+    #swapBtn {
+        transform: rotate(90deg);
+    }
+
+    textarea {
+        width: 100%;
+        min-height: 180px;
+        font-size: 16px;
+    }
+
+    select {
+        width: 100%;
+        font-size: 16px;
+    }
+
+    .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .buttons button {
+        flex: 1;
+        min-width: 120px;
+    }
+
+    .top-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .top-buttons button {
+        flex: 1;
+        min-width: 120px;
+    }
+
+    .translate-area button {
+        width: 100%;
+        font-size: 18px;
+        padding: 15px;
+    }
+
+    #previewImage {
+        width: 100%;
+        height: auto;
+    }
+
+    header h1 {
+        font-size: 30px;
+    }
+
+    header p {
+        font-size: 16px;
+    }
+}
