@@ -8,7 +8,7 @@ const copyInput = document.getElementById("copyInput");
 const copyOutput = document.getElementById("copyOutput");
 const micBtn = document.getElementById("micBtn");
 const themeBtn = document.getElementById("themeBtn");
-
+const speakBtn = document.getElementById("speakBtn");
 // =======================
 // VOICE INPUT
 // =======================
@@ -129,4 +129,50 @@ themeBtn.addEventListener("click", function () {
     } else {
         themeBtn.textContent = "🌙 Dark Mode";
     }
+});
+// =======================
+// TEXT TO SPEECH
+// =======================
+
+speakBtn.addEventListener("click", function () {
+
+    if (outputText.value.trim() === "") {
+        alert("Nothing to read.");
+        return;
+    }
+
+    speechSynthesis.cancel();
+
+    const speech = new SpeechSynthesisUtterance(outputText.value);
+
+    switch (toLanguage.value) {
+        case "en":
+            speech.lang = "en-US";
+            break;
+
+        case "am":
+            speech.lang = "am-ET";
+            break;
+
+        case "fr":
+            speech.lang = "fr-FR";
+            break;
+
+        case "es":
+            speech.lang = "es-ES";
+            break;
+
+        case "de":
+            speech.lang = "de-DE";
+            break;
+
+        default:
+            speech.lang = "en-US";
+    }
+
+    speech.rate = 1;
+    speech.pitch = 1;
+
+    speechSynthesis.speak(speech);
+
 });
