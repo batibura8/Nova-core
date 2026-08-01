@@ -7,7 +7,19 @@ const swapBtn = document.getElementById("swapBtn");
 const copyInput = document.getElementById("copyInput");
 const copyOutput = document.getElementById("copyOutput");
 const micBtn = document.getElementById("micBtn");
-
+switch (fromLanguage.value) {
+    case "en":
+        recognition.lang = "en-US";
+        break;
+    case "am":
+        recognition.lang = "am-ET";
+        break;
+    case "om":
+        recognition.lang = "en-US";
+        break;
+    default:
+        recognition.lang = "en-US";
+}
 const SpeechRecognition =
     window.SpeechRecognition || window.webkitSpeechRecognition;
 
