@@ -120,30 +120,3 @@ themeBtn.addEventListener("click", () => {
     }
 });
 
-if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
-
-    const SpeechRecognition =
-        window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    const recognition = new SpeechRecognition();
-
-    recognition.continuous = false;
-    recognition.interimResults = false;
-    recognition.lang = "en-US";
-
-    micBtn.addEventListener("click", () => {
-        recognition.start();
-    });
-
-    recognition.onresult = (event) => {
-        inputText.value = event.results[0][0].transcript;
-    };
-
-    recognition.onerror = (event) => {
-        alert("Voice Error: " + event.error);
-    };
-
-} else {
-    micBtn.disabled = true;
-    micBtn.innerHTML = "❌ Not Supported";
-}
