@@ -319,6 +319,79 @@ inputText.addEventListener("keydown", (event) => {
         translateBtn.click();
 
     }
+// ===============================
+// 📥 DOWNLOAD TRANSLATION
+// ===============================
 
+const downloadBtn =
+document.getElementById("downloadBtn");
+
+downloadBtn.addEventListener("click", () => {
+
+    if (outputText.value.trim() === "") {
+
+        alert("Nothing to download.");
+
+        return;
+
+    }
+
+    const file = new Blob(
+        [outputText.value],
+        { type: "text/plain" }
+    );
+
+    const link =
+    document.createElement("a");
+
+    link.href = URL.createObjectURL(file);
+
+    link.download = "translation.txt";
+
+    link.click();
+
+});
+
+// ===============================
+// 🗑️ CLEAR
+// ===============================
+
+const clearBtn =
+document.getElementById("clearBtn");
+
+clearBtn.addEventListener("click", () => {
+
+    inputText.value = "";
+
+    outputText.value = "";
+
+});
+
+// ===============================
+// ⭐ FAVORITE
+// ===============================
+
+let favorites = JSON.parse(
+localStorage.getItem("favorites")
+) || [];
+
+function addFavorite(){
+
+    favorites.push({
+
+        input: inputText.value,
+
+        output: outputText.value
+
+    });
+
+    localStorage.setItem(
+        "favorites",
+        JSON.stringify(favorites)
+    );
+
+    alert("⭐ Saved!");
+
+}
 });
 
