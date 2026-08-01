@@ -33,7 +33,7 @@ recognition.onstart = function () {
 recognition.onend = function () {
     isListening = false;
     micBtn.textContent = "🎤 Speak";
-};
+
     });
 
     recognition.onresult = function (event) {
