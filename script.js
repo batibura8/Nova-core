@@ -20,8 +20,6 @@ const speakBtn = document.getElementById("speakBtn");
 
 const themeBtn = document.getElementById("themeBtn");
 
-const imageInput = document.getElementById("imageInput");
-const previewImage = document.getElementById("previewImage");
 // ===============================
 // 🌙 DARK MODE
 // ===============================
