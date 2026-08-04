@@ -56,28 +56,7 @@ swapBtn.addEventListener("click", () => {
 
 });
 
-// ===============================
-// 📷 IMAGE PREVIEW
-// ===============================
 
-imageInput.addEventListener("change", () => {
-
-    const file = imageInput.files[0];
-
-    if (!file) return;
-
-    const reader = new FileReader();
-
-    reader.onload = function (e) {
-
-        previewImage.src = e.target.result;
-        previewImage.style.display = "block";
-
-    };
-
-    reader.readAsDataURL(file);
-
-});
 // ===============================
 // 📋 COPY INPUT
 // ===============================
