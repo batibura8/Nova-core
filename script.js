@@ -1,5 +1,5 @@
 // ===============================
-// LINGO BATI v2.0
+// NOVA CORE Translator
 // ===============================
 
 // Elements
@@ -19,356 +19,178 @@ const micBtn = document.getElementById("micBtn");
 const speakBtn = document.getElementById("speakBtn");
 
 const themeBtn = document.getElementById("themeBtn");
+const clearBtn = document.getElementById("clearBtn");
+const downloadBtn = document.getElementById("downloadBtn");
 
 // ===============================
-// 🌙 DARK MODE
+// DARK MODE
 // ===============================
 
 themeBtn.addEventListener("click", () => {
 
     document.body.classList.toggle("dark");
 
-    if (document.body.classList.contains("dark")) {
-
-        themeBtn.textContent = "☀️ Light Mode";
-
-    } else {
-
-        themeBtn.textContent = "🌙 Dark Mode";
-
+    if(document.body.classList.contains("dark")){
+        themeBtn.textContent="☀️ Light Mode";
+    }else{
+        themeBtn.textContent="🌙 Dark Mode";
     }
 
 });
 
 // ===============================
-// 🔄 SWAP LANGUAGES
+// SWAP
 // ===============================
 
-swapBtn.addEventListener("click", () => {
+swapBtn.addEventListener("click",()=>{
 
-    const tempLang = fromLanguage.value;
-    fromLanguage.value = toLanguage.value;
-    toLanguage.value = tempLang;
+    [fromLanguage.value,toLanguage.value]=
+    [toLanguage.value,fromLanguage.value];
 
-    const tempText = inputText.value;
-    inputText.value = outputText.value;
-    outputText.value = tempText;
+    [inputText.value,outputText.value]=
+    [outputText.value,inputText.value];
 
 });
 
-
 // ===============================
-// 📋 COPY INPUT
+// TRANSLATE
 // ===============================
 
-copyInput.addEventListener("click", () => {
+translateBtn.addEventListener("click",async()=>{
 
-    if (inputText.value.trim() === "") {
-        alert("Nothing to copy.");
+    const text=inputText.value.trim();
+
+    if(text===""){
+        alert("Enter text");
         return;
     }
 
-    navigator.clipboard.writeText(inputText.value);
-    alert("✅ Input copied!");
+    outputText.value="Translating...";
 
-});
+    try{
 
-// ===============================
-// 📋 COPY OUTPUT
-// ===============================
+        const res=await fetch(
+        `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${fromLanguage.value}|${toLanguage.value}`);
 
-copyOutput.addEventListener("click", () => {
+        const data=await res.json();
 
-    if (outputText.value.trim() === "") {
-        alert("Nothing to copy.");
-        return;
-    }
+        outputText.value=data.responseData.translatedText;
 
-    navigator.clipboard.writeText(outputText.value);
-    alert("✅ Translation copied!");
+    }catch(e){
 
-});
-
-// ===============================
-// 🔊 TEXT TO SPEECH
-// ===============================
-
-speakBtn.addEventListener("click", () => {
-
-    if (outputText.value.trim() === "") {
-        alert("Nothing to read.");
-        return;
-    }
-
-    speechSynthesis.cancel();
-
-    const speech = new SpeechSynthesisUtterance(outputText.value);
-
-    switch (toLanguage.value) {
-
-        case "en":
-            speech.lang = "en-US";
-            break;
-
-        case "am":
-            speech.lang = "am-ET";
-            break;
-
-        case "fr":
-            speech.lang = "fr-FR";
-            break;
-
-        case "es":
-            speech.lang = "es-ES";
-            break;
-
-        case "de":
-            speech.lang = "de-DE";
-            break;
-
-        case "ar":
-            speech.lang = "ar-SA";
-            break;
-
-        default:
-            speech.lang = "en-US";
-
-    }
-
-    speech.rate = 1;
-    speech.pitch = 1;
-
-    speechSynthesis.speak(speech);
-
-});
-// ===============================
-// 🌍 TRANSLATE
-// ===============================
-
-translateBtn.addEventListener("click", async () => {
-
-    const text = inputText.value.trim();
-
-    if (text === "") {
-        alert("Please enter text to translate.");
-        return;
-    }
-
-    outputText.value = "Translating...";
-
-    try {
-
-        const url =
-            "https://api.mymemory.translated.net/get?q=" +
-            encodeURIComponent(text) +
-            "&langpair=" +
-            fromLanguage.value +
-            "|" +
-            toLanguage.value;
-
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (data.responseData) {
-
-            outputText.value =
-                data.responseData.translatedText;
-
-        } else {
-
-            outputText.value =
-                "Translation failed.";
-
-        }
-
-    } catch (error) {
-
-        console.error(error);
-
-        outputText.value =
-            "Internet connection error.";
+        outputText.value="Translation failed.";
 
     }
 
 });
 
-
 // ===============================
-// 🎤 VOICE INPUT
-// ===============================
-
-const SpeechRecognition =
-window.SpeechRecognition ||
-window.webkitSpeechRecognition;
-
-if (SpeechRecognition) {
-
-    const recognition = new SpeechRecognition();
-
-    recognition.lang = "en-US";
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
-
-    micBtn.addEventListener("click", () => {
-
-        recognition.start();
-
-    });
-
-    recognition.onresult = (event) => {
-
-        inputText.value =
-        event.results[0][0].transcript;
-
-    };
-
-    recognition.onerror = (event) => {
-
-        alert("Voice Error : " + event.error);
-
-    };
-
-} else {
-
-    micBtn.disabled = true;
-
-    micBtn.textContent =
-    "Speech Not Supported";
-
-}
-// ===============================
-// 💾 TRANSLATION HISTORY
+// COPY
 // ===============================
 
-let history = [];
+copyInput.addEventListener("click",()=>{
 
-function saveHistory(input, output) {
+navigator.clipboard.writeText(inputText.value);
 
-    history.unshift({
-        input: input,
-        output: output,
-        time: new Date().toLocaleString()
-    });
+});
 
-    if (history.length > 10) {
-        history.pop();
-    }
+copyOutput.addEventListener("click",()=>{
 
-    localStorage.setItem(
-        "lingoHistory",
-        JSON.stringify(history)
-    );
+navigator.clipboard.writeText(outputText.value);
+
+});
+
+// ===============================
+// CLEAR
+// ===============================
+
+clearBtn.addEventListener("click",()=>{
+
+inputText.value="";
+outputText.value="";
+
+});
+
+// ===============================
+// DOWNLOAD
+// ===============================
+
+downloadBtn.addEventListener("click",()=>{
+
+if(outputText.value==="") return;
+
+const blob=new Blob([outputText.value],{type:"text/plain"});
+
+const a=document.createElement("a");
+
+a.href=URL.createObjectURL(blob);
+
+a.download="translation.txt";
+
+a.click();
+
+});
+
+// ===============================
+// SPEAK
+// ===============================
+
+speakBtn.addEventListener("click",()=>{
+
+if(outputText.value==="") return;
+
+speechSynthesis.cancel();
+
+const speech=new SpeechSynthesisUtterance(outputText.value);
+
+speech.lang=toLanguage.value;
+
+speechSynthesis.speak(speech);
+
+});
+
+// ===============================
+// VOICE INPUT
+// ===============================
+
+const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+
+if(SpeechRecognition){
+
+const recognition=new SpeechRecognition();
+
+recognition.lang="en-US";
+
+recognition.onresult=(e)=>{
+
+inputText.value=e.results[0][0].transcript;
+
+};
+
+micBtn.addEventListener("click",()=>{
+
+recognition.start();
+
+});
+
+}else{
+
+micBtn.disabled=true;
 
 }
 
-// Save after translation
-translateBtn.addEventListener("click", () => {
-
-    setTimeout(() => {
-
-        if (
-            outputText.value &&
-            outputText.value !== "Translating..." &&
-            outputText.value !== "Translation failed."
-        ) {
-
-            saveHistory(
-                inputText.value,
-                outputText.value
-            );
-
-        }
-
-    }, 1500);
-
-});
-
 // ===============================
-// ⌨️ PRESS ENTER TO TRANSLATE
+// ENTER TO TRANSLATE
 // ===============================
 
-inputText.addEventListener("keydown", (event) => {
+inputText.addEventListener("keydown",(e)=>{
 
-    if (event.key === "Enter" && !event.shiftKey) {
+if(e.key==="Enter"&&!e.shiftKey){
 
-        event.preventDefault();
+e.preventDefault();
 
-        translateBtn.click();
-
-    }
-    });
-// ===============================
-// 📥 DOWNLOAD TRANSLATION
-// ===============================
-
-const downloadBtn =
-document.getElementById("downloadBtn");
-
-downloadBtn.addEventListener("click", () => {
-
-    if (outputText.value.trim() === "") {
-
-        alert("Nothing to download.");
-
-        return;
-
-    }
-
-    const file = new Blob(
-        [outputText.value],
-        { type: "text/plain" }
-    );
-
-    const link =
-    document.createElement("a");
-
-    link.href = URL.createObjectURL(file);
-
-    link.download = "translation.txt";
-
-    link.click();
-
-});
-
-// ===============================
-// 🗑️ CLEAR
-// ===============================
-
-const clearBtn =
-document.getElementById("clearBtn");
-
-clearBtn.addEventListener("click", () => {
-
-    inputText.value = "";
-
-    outputText.value = "";
-
-});
-
-// ===============================
-// ⭐ FAVORITE
-// ===============================
-
-let favorites = JSON.parse(
-localStorage.getItem("favorites")
-) || [];
-
-function addFavorite(){
-
-    favorites.push({
-
-        input: inputText.value,
-
-        output: outputText.value
-
-    });
-
-    localStorage.setItem(
-        "favorites",
-        JSON.stringify(favorites)
-    );
-
-    alert("⭐ Saved!");
+translateBtn.click();
 
 }
 
+});
