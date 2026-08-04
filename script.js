@@ -296,6 +296,7 @@ inputText.addEventListener("keydown", (event) => {
         translateBtn.click();
 
     }
+    });
 // ===============================
 // 📥 DOWNLOAD TRANSLATION
 // ===============================
