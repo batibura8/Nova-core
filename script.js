@@ -371,5 +371,4 @@ function addFavorite(){
     alert("⭐ Saved!");
 
 }
-});
 
