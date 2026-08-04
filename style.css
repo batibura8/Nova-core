@@ -140,7 +140,9 @@ button {
     .container {
         padding: 20px;
     }
+
 }
+
 /* Dark Mode */
 
 .dark {
@@ -539,7 +541,7 @@ footer{
 
     width:10px;
 
-
+}
 ::-webkit-scrollbar-thumb{
 
     background:#2563eb;
