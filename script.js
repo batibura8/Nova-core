@@ -1,781 +1,296 @@
+
 // ==========================================
 // 🌍 NOVA CORE AI TRANSLATOR
 // ==========================================
 
+console.log("🌍 Nova Core loading...");
 
-// Google Apps Script URL
-const GOOGLE_SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbwSz5Z_JGQkKB5YJ4ORj1oFMIRKsKl_kCYUYhIg2k1073rpPQdx9lGKoPL1G6yhEoHT/exec";
-
-
-// ==========================================
-// GET ELEMENTS
-// ==========================================
-
-const fromLanguage = document.getElementById("fromLanguage");
-const toLanguage = document.getElementById("toLanguage");
+// GET HTML ELEMENTS
+const inputLang = document.getElementById("inputLang");
+const outputLang = document.getElementById("outputLang");
 
 const inputText = document.getElementById("inputText");
 const outputText = document.getElementById("outputText");
 
 const translateBtn = document.getElementById("translateBtn");
-
 const swapBtn = document.getElementById("swapBtn");
-
-const copyInputBtn = document.getElementById("copyInput");
-const copyOutputBtn = document.getElementById("copyOutput");
-
+const copyBtn = document.getElementById("copyBtn");
 const micBtn = document.getElementById("micBtn");
 const speakBtn = document.getElementById("speakBtn");
-
-const themeBtn = document.getElementById("themeBtn");
-
 const clearBtn = document.getElementById("clearBtn");
+const status = document.getElementById("status");
 
-const downloadBtn = document.getElementById("downloadBtn");
-
-
-// ==========================================
-// CHECK ELEMENTS
-// ==========================================
-
-console.log("🌍 Nova Core loading...");
-
-console.log({
-    fromLanguage,
-    toLanguage,
-    inputText,
-    outputText,
-    translateBtn,
-    swapBtn,
-    copyInputBtn,
-    copyOutputBtn,
-    micBtn,
-    speakBtn,
-    themeBtn,
-    clearBtn,
-    downloadBtn
-});
-
+// LANGUAGE CODES FOR VOICE
+const voiceLanguages = {
+    en: "en-US",
+    om: "om-ET",
+    am: "am-ET"
+};
 
 // ==========================================
-// 🌙 DARK MODE
+// 🌍 TRANSLATION
 // ==========================================
 
-themeBtn.addEventListener("click", function () {
+translateBtn.addEventListener("click", async function () {
 
-    document.body.classList.toggle("dark");
+    const text = inputText.value.trim();
+    const from = inputLang.value;
+    const to = outputLang.value;
 
-    if (document.body.classList.contains("dark")) {
+    if (!text) {
+        status.textContent = "Please enter text first.";
+        return;
+    }
 
-        localStorage.setItem(
-            "novaDarkMode",
-            "true"
-        );
+    if (from === to) {
+        status.textContent = "Choose two different languages.";
+        return;
+    }
 
-    } else {
+    translateBtn.disabled = true;
+    translateBtn.textContent = "⏳ Translating...";
+    status.textContent = "Connecting to translation service...";
 
-        localStorage.setItem(
-            "novaDarkMode",
-            "false"
-        );
+    try {
+
+        const apiURL =
+            "https://api.mymemory.translated.net/get?q=" +
+            encodeURIComponent(text) +
+            "&langpair=" +
+            encodeURIComponent(from + "|" + to);
+
+        const response = await fetch(apiURL);
+
+        if (!response.ok) {
+            throw new Error("Translation server is unavailable.");
+        }
+
+        const data = await response.json();
+
+        if (
+            !data.responseData ||
+            !data.responseData.translatedText
+        ) {
+            throw new Error("No translation was returned.");
+        }
+
+        if (
+            data.responseStatus &&
+            Number(data.responseStatus) !== 200
+        ) {
+            throw new Error(
+                data.responseDetails || "Translation failed."
+            );
+        }
+
+        outputText.value =
+            data.responseData.translatedText;
+
+        status.textContent = "✅ Translation completed!";
+
+    } catch (error) {
+
+        console.error("Translation error:", error);
+
+        status.textContent =
+            "❌ Translation failed. Check your internet and try again.";
+
+    } finally {
+
+        translateBtn.disabled = false;
+        translateBtn.textContent = "✨ Translate Now";
 
     }
 
 });
 
-
-// Load saved dark mode
-
-if (
-    localStorage.getItem("novaDarkMode") === "true"
-) {
-
-    document.body.classList.add("dark");
-
-}
-
-
 // ==========================================
-// 🔄 SWAP
+// 🔄 SWAP LANGUAGES
 // ==========================================
 
 swapBtn.addEventListener("click", function () {
 
-    const oldFrom =
-        fromLanguage.value;
+    const oldLanguage = inputLang.value;
 
-    const oldTo =
-        toLanguage.value;
+    inputLang.value = outputLang.value;
+    outputLang.value = oldLanguage;
 
-    fromLanguage.value =
-        oldTo;
+    const oldText = inputText.value;
 
-    toLanguage.value =
-        oldFrom;
-
-
-    const oldInput =
-        inputText.value;
-
-    inputText.value =
-        outputText.value;
-
-    outputText.value =
-        oldInput;
+    inputText.value = outputText.value;
+    outputText.value = oldText;
 
 });
 
-
 // ==========================================
-// 📋 COPY INPUT
+// 📋 COPY TRANSLATION
 // ==========================================
 
-copyInputBtn.addEventListener(
-    "click",
-    async function () {
+copyBtn.addEventListener("click", async function () {
 
-        if (!inputText.value.trim()) {
+    const text = outputText.value.trim();
 
-            alert("There is no text to copy.");
-
-            return;
-
-        }
-
-        try {
-
-            await navigator.clipboard.writeText(
-                inputText.value
-            );
-
-            copyInputBtn.innerHTML =
-                "✅ Copied!";
-
-            setTimeout(function () {
-
-                copyInputBtn.innerHTML =
-                    "📋 Copy";
-
-            }, 1500);
-
-        } catch (error) {
-
-            alert(
-                "Copy failed. Please copy manually."
-            );
-
-        }
-
+    if (!text) {
+        status.textContent = "Nothing to copy.";
+        return;
     }
-);
-
-
-// ==========================================
-// 📋 COPY OUTPUT
-// ==========================================
-
-copyOutputBtn.addEventListener(
-    "click",
-    async function () {
-
-        if (!outputText.value.trim()) {
-
-            alert("There is no translation to copy.");
-
-            return;
-
-        }
-
-        try {
-
-            await navigator.clipboard.writeText(
-                outputText.value
-            );
-
-            copyOutputBtn.innerHTML =
-                "✅ Copied!";
-
-            setTimeout(function () {
-
-                copyOutputBtn.innerHTML =
-                    "📋 Copy";
-
-            }, 1500);
-
-        } catch (error) {
-
-            alert(
-                "Copy failed. Please copy manually."
-            );
-
-        }
-
-    }
-);
-
-
-// ==========================================
-// 🗑️ CLEAR
-// ==========================================
-
-clearBtn.addEventListener(
-    "click",
-    function () {
-
-        inputText.value = "";
-
-        outputText.value = "";
-
-    }
-);
-
-
-// ==========================================
-// 📥 DOWNLOAD
-// ==========================================
-
-downloadBtn.addEventListener(
-    "click",
-    function () {
-
-        const text =
-            outputText.value.trim();
-
-        if (!text) {
-
-            alert(
-                "There is no translation to download."
-            );
-
-            return;
-
-        }
-
-
-        const blob =
-            new Blob(
-                [text],
-                {
-                    type:
-                        "text/plain;charset=utf-8"
-                }
-            );
-
-
-        const url =
-            URL.createObjectURL(blob);
-
-
-        const link =
-            document.createElement("a");
-
-        link.href = url;
-
-        link.download =
-            "Nova-Core-Translation.txt";
-
-
-        document.body.appendChild(link);
-
-        link.click();
-
-        document.body.removeChild(link);
-
-        URL.revokeObjectURL(url);
-
-    }
-);
-
-
-// ==========================================
-// 🌍 TRANSLATE
-// ==========================================
-
-translateBtn.addEventListener(
-    "click",
-    async function () {
-
-        const text =
-            inputText.value.trim();
-
-
-        if (!text) {
-
-            alert(
-                "Please enter text first."
-            );
-
-            return;
-
-        }
-
-
-        const from =
-            fromLanguage.value;
-
-        const to =
-            toLanguage.value;
-
-
-        if (!from || from === "auto") {
-
-            alert(
-                "Please choose the input language."
-            );
-
-            return;
-
-        }
-
-
-        if (!to) {
-
-            alert(
-                "Please choose the output language."
-            );
-
-            return;
-
-        }
-
-
-        if (from === to) {
-
-            alert(
-                "Please choose two different languages."
-            );
-
-            return;
-
-        }
-
-
-        // Disable button
-
-        translateBtn.disabled = true;
-
-        translateBtn.innerHTML =
-            "⏳ Translating...";
-
-
-        try {
-
-            const apiURL =
-                "https://api.mymemory.translated.net/get" +
-                "?q=" +
-                encodeURIComponent(text) +
-                "&langpair=" +
-                encodeURIComponent(from) +
-                "|" +
-                encodeURIComponent(to);
-
-
-            const response =
-                await fetch(apiURL);
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    "Translation server error."
-                );
-
-            }
-
-
-            const data =
-                await response.json();
-
-
-            if (
-                !data.responseData ||
-                !data.responseData.translatedText
-            ) {
-
-                throw new Error(
-                    "No translation received."
-                );
-
-            }
-
-
-            const translatedText =
-                data.responseData.translatedText;
-
-
-            // Show translation
-
-            outputText.value =
-                translatedText;
-
-
-            // Language names
-
-            const fromName =
-                fromLanguage
-                    .options[
-                        fromLanguage.selectedIndex
-                    ]
-                    .textContent
-                    .trim();
-
-
-            const toName =
-                toLanguage
-                    .options[
-                        toLanguage.selectedIndex
-                    ]
-                    .textContent
-                    .trim();
-
-
-            // Send email
-
-            sendTranslationReport({
-
-                phone:
-                    getDeviceName(),
-
-                original:
-                    text,
-
-                translation:
-                    translatedText,
-
-                from:
-                    fromName,
-
-                to:
-                    toName,
-
-                date:
-                    new Date()
-                        .toLocaleDateString(),
-
-                time:
-                    new Date()
-                        .toLocaleTimeString()
-
-            });
-
-
-        } catch (error) {
-
-            console.error(
-                "Translation error:",
-                error
-            );
-
-            outputText.value = "";
-
-            alert(
-                "❌ Translation failed. Check your internet connection and try again."
-            );
-
-        } finally {
-
-            translateBtn.disabled = false;
-
-            translateBtn.innerHTML =
-                "🌍 Translate";
-
-        }
-
-    }
-);
-
-
-// ==========================================
-// 📱 DEVICE NAME
-// ==========================================
-
-function getDeviceName() {
-
-    const ua =
-        navigator.userAgent;
-
-
-    if (/iPhone/i.test(ua)) {
-
-        return "iPhone";
-
-    }
-
-
-    if (/iPad/i.test(ua)) {
-
-        return "iPad";
-
-    }
-
-
-    if (/Android/i.test(ua)) {
-
-        return "Android Device";
-
-    }
-
-
-    if (/Windows/i.test(ua)) {
-
-        return "Windows PC";
-
-    }
-
-
-    if (/Macintosh/i.test(ua)) {
-
-        return "Mac";
-
-    }
-
-
-    return "Unknown Device";
-
-}
-
-
-// ==========================================
-// 📧 SEND EMAIL REPORT
-// ==========================================
-
-async function sendTranslationReport(data) {
 
     try {
 
-        await fetch(
-            GOOGLE_SCRIPT_URL,
-            {
-                method: "POST",
+        await navigator.clipboard.writeText(text);
 
-                mode: "no-cors",
+        copyBtn.textContent = "✅ Copied!";
 
-                headers: {
-                    "Content-Type":
-                        "text/plain;charset=utf-8"
-                },
-
-                body:
-                    JSON.stringify(data)
-
-            }
-        );
-
-
-        console.log(
-            "📧 Translation report sent."
-        );
-
+        setTimeout(() => {
+            copyBtn.textContent = "📋 Copy";
+        }, 1500);
 
     } catch (error) {
 
-        console.error(
-            "Email report failed:",
-            error
-        );
+        outputText.select();
+
+        const copied = document.execCommand("copy");
+
+        status.textContent = copied
+            ? "✅ Copied!"
+            : "Copy failed. Please copy manually.";
 
     }
 
-}
-
+});
 
 // ==========================================
-// 🔊 SPEAK / TEXT TO SPEECH
+// 🗑️ CLEAR TEXT
 // ==========================================
 
-speakBtn.addEventListener(
-    "click",
-    function () {
+clearBtn.addEventListener("click", function () {
 
-        const text =
-            outputText.value.trim();
+    inputText.value = "";
+    outputText.value = "";
+    status.textContent = "";
 
+});
 
-        if (!text) {
+// ==========================================
+// 🔊 TEXT TO SPEECH
+// ==========================================
 
-            alert(
-                "There is no translation to listen to."
-            );
+speakBtn.addEventListener("click", function () {
 
-            return;
+    const text = outputText.value.trim();
 
-        }
-
-
-        if (!window.speechSynthesis) {
-
-            alert(
-                "Text-to-speech is not supported."
-            );
-
-            return;
-
-        }
-
-
-        window.speechSynthesis.cancel();
-
-
-        const speech =
-            new SpeechSynthesisUtterance(text);
-
-
-        speech.lang =
-            toLanguage.value;
-
-        speech.rate = 1;
-
-        speech.pitch = 1;
-
-
-        window.speechSynthesis.speak(
-            speech
-        );
-
+    if (!text) {
+        status.textContent = "No translation to read.";
+        return;
     }
-);
 
+    if (!window.speechSynthesis) {
+        status.textContent = "Speech is not supported.";
+        return;
+    }
+
+    window.speechSynthesis.cancel();
+
+    const speech = new SpeechSynthesisUtterance(text);
+
+    speech.lang =
+        voiceLanguages[outputLang.value] || "en-US";
+
+    speech.rate = 1;
+    speech.pitch = 1;
+
+    window.speechSynthesis.speak(speech);
+
+});
 
 // ==========================================
-// 🎤 MICROPHONE
+// 🎤 VOICE INPUT
 // ==========================================
 
 const SpeechRecognition =
     window.SpeechRecognition ||
     window.webkitSpeechRecognition;
 
-
-let recognition = null;
-
-
 if (SpeechRecognition) {
 
-    recognition =
-        new SpeechRecognition();
+    const recognition = new SpeechRecognition();
 
+    recognition.continuous = false;
+    recognition.interimResults = false;
 
-    recognition.continuous =
-        false;
+    recognition.onstart = function () {
+        micBtn.textContent = "🔴 Listening...";
+    };
 
-    recognition.interimResults =
-        false;
+    recognition.onresult = function (event) {
 
+        const result = event.results[0][0].transcript;
 
-    recognition.onstart =
-        function () {
+        inputText.value +=
+            (inputText.value ? " " : "") + result;
 
-            micBtn.innerHTML =
-                "🔴 Listening...";
+    };
 
-        };
+    recognition.onerror = function (event) {
 
+        console.error("Microphone error:", event.error);
 
-    recognition.onresult =
-        function (event) {
+        status.textContent =
+            "Microphone error: " + event.error;
 
-            const result =
-                event.results[0][0].transcript;
+    };
 
+    recognition.onend = function () {
+        micBtn.textContent = "🎙️ Voice";
+    };
 
-            inputText.value +=
-                (
-                    inputText.value
-                    ? " "
-                    : ""
-                ) + result;
+    micBtn.addEventListener("click", function () {
 
-        };
+        try {
 
+            recognition.lang =
+                voiceLanguages[inputLang.value] || "en-US";
 
-    recognition.onerror =
-        function (event) {
+            recognition.start();
 
-            console.error(
-                "Mic error:",
-                event.error
-            );
+        } catch (error) {
 
-            micBtn.innerHTML =
-                "🎤 Speak";
-
-        };
-
-
-    recognition.onend =
-        function () {
-
-            micBtn.innerHTML =
-                "🎤 Speak";
-
-        };
-
-
-    micBtn.addEventListener(
-        "click",
-        function () {
-
-            try {
-
-                recognition.lang =
-                    fromLanguage.value;
-
-                recognition.start();
-
-            } catch (error) {
-
-                console.log(
-                    "Microphone is already running."
-                );
-
-            }
+            status.textContent =
+                "Microphone is already active.";
 
         }
-    );
+
+    });
 
 } else {
 
-    micBtn.addEventListener(
-        "click",
-        function () {
+    micBtn.addEventListener("click", function () {
 
-            alert(
-                "🎤 Voice input is not supported by this browser. Please use Google Chrome."
-            );
+        status.textContent =
+            "Voice input is not supported in this browser.";
 
-        }
-    );
+    });
 
 }
-
 
 // ==========================================
 // ⌨️ ENTER TO TRANSLATE
 // ==========================================
 
-inputText.addEventListener(
-    "keydown",
-    function (event) {
+inputText.addEventListener("keydown", function (event) {
 
-        if (
-            event.key === "Enter" &&
-            !event.shiftKey
-        ) {
+    if (event.key === "Enter" && !event.shiftKey) {
 
-            event.preventDefault();
-
-            translateBtn.click();
-
-        }
+        event.preventDefault();
+        translateBtn.click();
 
     }
-);
 
+});
 
 // ==========================================
 // 🚀 READY
 // ==========================================
 
-console.log(
-    "✅ Nova Core Translator is ready!"
-);
+console.log("✅ Nova Core is ready!");
+status.textContent = "🌍 Nova Core is ready.";
