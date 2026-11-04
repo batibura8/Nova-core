@@ -1,14 +1,116 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nova Core - AI Translator</title>
+
+    <meta name="description" content="Nova Core is a free online AI translator for English, Afaan Oromoo, Amharic and multiple languages.">
+    <meta name="keywords" content="Nova Core, AI Translator, English to Afaan Oromoo, Afaan Oromoo to English, Amharic Translator, Free Online Translator">
+    <meta name="author" content="Nova Core">
+
+    <meta name="google-site-verification" content="bAb08M4Hdt35hH2M7bNBJsi4gpMdCr8hK-Xt-aWvo90">
+
+    <meta name="theme-color" content="#080d20">
+
+    <link rel="stylesheet" href="./style.css">
+
+    <link rel="icon" href="./favicon.png">
+</head>
+
+<body>
+
+<header>
+    <h1>🌐 NOVA CORE</h1>
+    <p>AI Translator – Break Language Barriers</p>
+</header>
+
+<main class="container">
+
+    <section class="card">
+
+        <h2>Translate Your Language</h2>
+
+        <div class="middle">
+
+            <select id="inputLang">
+                <option value="auto">Detect Language</option>
+                <option value="en">English</option>
+                <option value="om">Afaan Oromoo</option>
+                <option value="am">Amharic</option>
+            </select>
+
+            <button id="swapBtn" type="button">⇄</button>
+
+            <select id="outputLang">
+                <option value="om">Afaan Oromoo</option>
+                <option value="en">English</option>
+                <option value="am">Amharic</option>
+            </select>
+
+        </div>
+
+        <div class="translator-area">
+
+            <div class="translation-box">
+                <label for="inputText">Enter Text</label>
+
+                <textarea id="inputText"
+                    placeholder="Type or paste your text here..."></textarea>
+
+                <div class="actions">
+                    <button id="micBtn" type="button">🎙️ Voice</button>
+                    <button id="clearBtn" type="button">🗑️ Clear</button>
+                </div>
+            </div>
+
+            <div class="translation-box">
+                <label for="outputText">Translation</label>
+
+                <textarea id="outputText"
+                    placeholder="Your translation will appear here..."
+                    readonly></textarea>
+
+                <div class="actions">
+                    <button id="copyBtn" type="button">📋 Copy</button>
+                    <button id="speakBtn" type="button">🔊 Listen</button>
+                </div>
+            </div>
+
+        </div>
+
+        <button id="translateBtn" type="button">
+            ✨ Translate Now
+        </button>
+
+        <p id="status" role="status"></p>
+
+    </section>
+
+</main>
+
+
 <!-- NOVA CORE FEATURE SECTION -->
 
 <section class="nova-features">
 
     <div class="features-heading">
-        <span class="section-tag">✨ DISCOVER NOVA CORE</span>
 
-        <h2>One Platform. <span>Many Languages.</span></h2>
+        <span class="section-tag">
+            ✨ DISCOVER NOVA CORE
+        </span>
 
-        <p>Break language barriers with Nova Core.</p>
+        <h2>
+            One Platform.
+            <span>Many Languages.</span>
+        </h2>
+
+        <p>
+            Break language barriers with Nova Core.
+        </p>
+
     </div>
 
     <div class="features-grid">
@@ -16,25 +118,37 @@
         <div class="feature-card">
             <div class="feature-icon">🌍</div>
             <h3>Multilingual</h3>
-            <p>Connect with people across different languages around the world.</p>
+            <p>
+                Connect with people across different
+                languages around the world.
+            </p>
         </div>
 
         <div class="feature-card">
             <div class="feature-icon">⚡</div>
             <h3>Fast Translation</h3>
-            <p>Translate your text quickly with a simple and easy interface.</p>
+            <p>
+                Translate your text quickly with a
+                simple and easy interface.
+            </p>
         </div>
 
         <div class="feature-card">
             <div class="feature-icon">🇪🇹</div>
             <h3>Afaan Oromoo</h3>
-            <p>Explore translation between Afaan Oromoo, English and Amharic.</p>
+            <p>
+                Explore translation between Afaan
+                Oromoo, English and Amharic.
+            </p>
         </div>
 
         <div class="feature-card">
             <div class="feature-icon">🎙️</div>
             <h3>Voice Support</h3>
-            <p>Use voice features to make language communication easier.</p>
+            <p>
+                Use voice features to make language
+                communication easier.
+            </p>
         </div>
 
     </div>
@@ -46,3 +160,19 @@
     </div>
 
 </section>
+
+
+<footer>
+    <p>© 2026 Nova Core AI Translator. All Rights Reserved.</p>
+    <p>Made with ❤️ for the world.</p>
+</footer>
+
+
+<!-- OCR LIBRARY -->
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
+<!-- MAIN JAVASCRIPT -->
+<script src="./script.js"></script>
+
+</body>
+</html>
